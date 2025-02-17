@@ -9,14 +9,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-      
+          cache: 'npm' # Caches dependencies to speed up future runs
+
       - name: Install Dependencies
-        run: npm install
-        
+        run: npm ci # Ensures dependencies match package-lock.json
+
+      - name: Check Environment Variables (Optional)
+        run: |
+          if [ ! -f .env ]; then
+            echo "⚠️ .env file is missing! Ensure required environment variables are set."
+            exit 1
+          fi
+
       - name: Run Build
         run: npm run build
