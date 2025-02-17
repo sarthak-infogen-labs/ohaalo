@@ -1,16 +1,17 @@
-# FROM node:18-alpine
+FROM node:16-alpine
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY package*.json ./
-# COPY prisma ./prisma/
+COPY package* .
+COPY ./prisma .
 
-# RUN npm install
+RUN npm install
+RUN npx prisma generate
 
-# COPY . .
+COPY . .
 
-# RUN npm run build
+RUN npm run build
 
-# EXPOSE 3000
+EXPOSE 3000
 
-# CMD ["npm", "start"]
+CMD ["node","dist/index.js"]
